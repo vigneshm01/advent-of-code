@@ -1,23 +1,38 @@
 package twenty.twentyfour
 
-import scala.io.StdIn.readLine
+import scala.io.Source
 
-object Day1{
+object Day1 {
 
   def main(args: Array[String]): Unit = {
-    var first :List[Int] = List()
-    var second :List[Int] = List()
-    var flag = true
+//    var first :List[Int] = List()
+//    var second :List[Int] = List()
+//    var flag = true
+//
+//    while(flag){
+//      val input = readLine()
+//      if (input == null || input.trim.isEmpty){
+//        flag = false
+//      }
+//      else{
+//        val Array(a,b) = input.trim.split("   ")
+//        first = first :+ a.toInt
+//        second = second :+ b.toInt
+//      }
+//    }
 
-    while(flag){
-      val input = readLine()
-      if (input == null || input.trim.isEmpty){
-        flag = false
-      }
-      else{
-        val Array(a,b) = input.trim.split("   ")
-        first = first :+ a.toInt
-        second = second :+ b.toInt
+    val (first, second) = {
+      val source = Source.fromFile("src/resources/input/24Day1.txt")
+      try {
+        source.getLines()
+          .map { line =>
+            val Array(a, b) = line.trim.split("   ")
+            (a.toInt, b.toInt)
+          }
+          .toList
+          .unzip
+      } finally {
+        source.close()
       }
     }
 
@@ -31,17 +46,12 @@ object Day1{
     print("part1 Result:\t")
     println(result.sum)
 
+    val freqInList2 = list2.groupBy(identity).map((k, v) => (k, v.size))
 
-    val freqInList2 = list2.groupBy(identity).map((k,v)=> (k,v.size))
-
-    val result2 = list1.map(x => x*freqInList2.getOrElse(x, 0))
+    val result2 = list1.map(x => x * freqInList2.getOrElse(x, 0))
 
     print("part1 Result:\t")
     println(result2.sum)
-
-    val element = Seq(1,2,3,4)
-
-
 
   }
 
