@@ -17,9 +17,9 @@ object Day3 extends App {
 
   val sampleInput =
     "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
-  val regex = "mul\\((\\d{1,3})\\,(\\d{1,3})\\)".r
+  val mulPattern = "mul\\((\\d{1,3})\\,(\\d{1,3})\\)".r
   //regex of mull(12,23) is mul\(\d{1,3}\,\d{1,3}\) we add grouping by having another additon bracket mul\((\d{1,3})\,(\d{1,3})\)
-  val mul = regex.findAllMatchIn(input).map(m => (m.group(1).toInt, m.group(2).toInt)).toList
+  val mul = mulPattern.findAllMatchIn(input).map(m => (m.group(1).toInt, m.group(2).toInt)).toList
 
 //  val string: List[String] = regex.findAllIn(source).toList
 
@@ -31,10 +31,19 @@ object Day3 extends App {
 
   val sampleInput2 = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"
   val regex2 = "mul\\(\\d{1,3}\\,\\d{1,3}\\)|do\\(\\)|don't\\(\\)".r
-  val ad = regex2.fin(sampleInput2).map(m => )
-  val cal = for{
-    i <- 
+
+  val (_, ans2) = regex2.findAllIn(input).foldLeft((true, 0)){
+    case ((true, sum), mulPattern(a,b))  => (true, sum + (a.toInt * b.toInt))
+    case ((_, sum), "don't()") => (false, sum)
+    case ((_, sum), "do()") => (true, sum)
+    case ((false, sum), _) => (false,sum)
+
   }
 
-  println(ad)
+  println("********************************************")
+  println("*********** PART 2 ANSWER ******************")
+  println(s"******  $ans2   *******")
+  println("********************************************")
+
+
 }
