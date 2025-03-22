@@ -57,6 +57,6 @@ object Day7 extends App{
 
   val samplePart2 = sampleInput.filter(isCalibratableWithConcat).map(_._1).sum
   val actualPart2 = input.filter(isCalibratableWithConcat).map(_._1).sum
-  println(s"result for sample part1: ${samplePart2}")
-  println(s"result for actual part1: ${actualPart2}")
+  println(s"result for sample part2: ${samplePart2}")
+  println(s"result for actual part2: ${actualPart2}")
 }
