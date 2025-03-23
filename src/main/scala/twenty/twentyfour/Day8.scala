@@ -89,6 +89,6 @@ object Day8 extends App {
 
   val output2 = parse andThen countAntiNodesPart2
 
-  println(s"result for sample part1: ${output2(sampleInput1)}")
-  println(s"result for actual part1: ${output2(input)}")
+  println(s"result for sample part2: ${output2(sampleInput1)}")
+  println(s"result for actual part2: ${output2(input)}")
 }
