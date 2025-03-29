@@ -88,7 +88,7 @@ object Day9 extends App {
 
     def createDisk(input: String): Disk = {
       val intInput = input.toList.map(_ - '0')
-      val fileGroups = intInput.grouped(2).toList
+      val fileGroups = intInput.grouped(2).toVector
       val zipped = fileGroups.zipWithIndex
       val disk = zipped.flatMap{
         case (List(file, free), idx) =>
