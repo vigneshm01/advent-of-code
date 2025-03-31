@@ -56,7 +56,7 @@ object Day11 extends App {
           case Vector(1) => accStonesOrder.update(k, -v).update(1, v)
           case Vector(a, b) => accStonesOrder.update(k, -v).update(a, v).update(b, v)
           case Vector(x) => accStonesOrder.update(k, -v).update(x,v)
-          case _ => throw MatchError("this is expected")
+          case _ => throw MatchError("this is unexpected")
     }
 
     Iterator
