@@ -76,14 +76,28 @@ object Day12 extends App {
       }
     }
 
+    def neighborPositions(pos: Position): List[Position] = {
+      (pos._1 - 1 to pos._1 + 1).flatMap { x =>
+        (pos._2 - 1 to pos._2 + 1).flatMap { y =>
+          Option.when(x != pos._1 || y != pos._2)((x, y))
+        }
+      }.toList
+    }
+
+
     def optionalCardinalPosition(pos: Position): List[Option[Char]] =
       cardinalPositions(pos).map(get)
+
+    def optionalNeighbors(pos: Position): List[Option[Char]] = {
+      neighborPositions(pos).map(get)
+    }
   }
+
 
   extension (region: Region) {
     def asPlantMap: PlantMap = {
-      val length = region.maxBy(_._1)._1
-      val width = region.maxBy(_._2)._2
+      val length = region.maxBy(_._1)._1 + 1
+      val width = region.maxBy(_._2)._2 + 1
       val dotGrid = Array.fill(length, width)('.')
       for ((x, y) <- region if x >= 0 && x < length && y >= 0 && y < width) {
         dotGrid(x)(y) = '#'
@@ -92,16 +106,36 @@ object Day12 extends App {
       PlantMap(x)
     }
 
+    def inflate: Region = {
+      region.flatMap((x, y) => List((x * 2, y * 2), (x * 2 + 1, y * 2), (x * 2, y * 2 + 1), (x * 2 + 1, y * 2 + 1)))
+    }
+
     def area: Int = region.size
     def perimeter: Int = {
       val regionMap = region.asPlantMap
       region.map(p => regionMap.optionalCardinalPosition(p).count(_.forall(_ != '#'))).sum
     }
+
+    def side: Int = {
+      val bigRegion = region.inflate
+      val regionMap = bigRegion.asPlantMap
+      bigRegion.count { (x, y) =>
+        val neighborCount = regionMap.optionalNeighbors(x, y).count(_.contains('#'))
+        neighborCount match {
+          case 3 | 4 | 7 => true
+          case _ => false
+        }
+      }
+    }
   }
 
   def part1(in: Vector[String]): Int  = PlantMap(in).regions.map(r => r.area * r.perimeter).sum
 
+  def part2(in: Vector[String]): Int = PlantMap(in).regions.map(r => r.area * r.side).sum
+
   println(s"part1 sample input result: ${part1(sampleInput)}")
+  println(s"part1 actual input result: ${part1(input)}")
 
-
+  println(s"part2 sample input result: ${part2(sampleInput)}")
+  println(s"part2 actual input result: ${part2(input)}")
 }
